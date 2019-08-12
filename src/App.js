@@ -17,13 +17,21 @@ function App() {
 	const [cart, setCart] = useState([]);
 
 	const addItem = item => {
+		console.log('item added to cart', item);
 		setCart([...cart, item]);
+		localStorage.setItem(item.title,JSON.stringify(item));
 	};
+
+	const removeItem = item => {
+		console.log('removeItem triggered item: ', item)
+		const updatedCart = cart.filter( book => book.id !== item.id );
+		setCart(updatedCart);
+	}
 
 	return (
 		<div className="App">
 			<ProductContext.Provider value={{products, addItem}} >
-				<CartContext.Provider value={{cart}} >
+				<CartContext.Provider value={{cart, removeItem}} >
 					<Navigation />
 					<Route exact path="/" component={Products}/>
 					<Route path="/cart" component={ShoppingCart}/>
